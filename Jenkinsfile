@@ -10,7 +10,7 @@ node {
     stage('Build image') {
         /* This builds the actual image */
 
-        app = docker.build("anandr72/nodeapp")
+        app = docker.build("4ab4c602aa5/dockerfilejobs")
     }
 
     stage('Test image') {
@@ -21,10 +21,8 @@ node {
     }
 
     stage('Push image') {
-        /* 
-			You would need to first register with DockerHub before you can push images to your account
-		*/
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
+     
+       withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
             } 
